@@ -15,7 +15,9 @@ app.get('/', (req, res) => {
 app.use(urlencoded({ extended: false }))
 
 const userRouter = require('./controllers/userController')
+const exerciseRouter = require('./controllers/exerciseController')
 app.use('/api/users', userRouter)
+app.use('/api/users/:_id/exercises', exerciseRouter)
 
 
 
