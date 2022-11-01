@@ -25,11 +25,14 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+app.get('/api', (req, res) => {
+  const date = new Date()
+  res.json({ unix: date.getTime(), utc: date.toUTCString() })
+})
 app.get('/api/:date',  (req, res) => {
-  const date = new Date(req.params.date)
-  res.json({
-    unix: date.getTime(),
-    utc: date.toUTCString()})
+  const dateInput = isNaN(req.params.date) ? req.params.date : Number(req.params.date)
+  const date = new Date(dateInput)
+  res.json({ unix: date.getTime(), utc: date.toUTCString() })
 })
 
 // listen for requests :)
