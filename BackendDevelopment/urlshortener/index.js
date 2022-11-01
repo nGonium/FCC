@@ -30,13 +30,19 @@ app.post('/api/shorturl', (req, res) => {
   const { host } = URL.parse(url)
   dns.lookup(host, (err, addr) => {
     if (err) return res.json({ error: 'invalid url' })
-    const len = db.push(url)
-    const obj = { original_url: url, short_url: len - 1}
+    const obj = { 
+      original_url: url, 
+      short_url: db.length > 0 ? db[db.length - 1].short_url + 1 : 0,
+    }
+    db.push(obj)
     res.json(obj)
   })
 })
 app.get('/api/shorturl/:id', (req, res) => {
-  res.redirect(db[req.params.id])
+  const id = parseInt(req.params.id)
+  const item = db.find((el) => el.short_url === id)
+  if (!item) res.json({ error: "No short URL found for the given input" })
+  res.redirect(item.original_url)
 })
 
 app.listen(port, function() {
