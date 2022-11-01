@@ -4,7 +4,6 @@ const cors = require('cors');
 const app = express();
 const dns = require('dns')
 const { json, urlencoded } = require('body-parser');
-const URL = require('url')
 
 // Basic Configuration
 const port = process.env.PORT || 3000;
@@ -27,7 +26,7 @@ const db = []
 
 app.post('/api/shorturl', (req, res) => {
   const { url } = req.body
-  const { host } = URL.parse(url)
+  const { host } = new URL(url)
   dns.lookup(host, (err, addr) => {
     if (err) return res.json({ error: 'invalid url' })
     const obj = { 
@@ -38,6 +37,7 @@ app.post('/api/shorturl', (req, res) => {
     res.json(obj)
   })
 })
+
 app.get('/api/shorturl/:id', (req, res) => {
   const id = parseInt(req.params.id)
   const item = db.find((el) => el.short_url === id)
