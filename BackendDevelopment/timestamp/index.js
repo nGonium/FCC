@@ -32,7 +32,11 @@ app.get('/api', (req, res) => {
 app.get('/api/:date',  (req, res) => {
   const dateInput = isNaN(req.params.date) ? req.params.date : Number(req.params.date)
   const date = new Date(dateInput)
-  res.json({ unix: date.getTime(), utc: date.toUTCString() })
+  if (isNaN(date)) {
+    res.json({ error: "Invalid Date" })
+  } else {
+    res.json({ unix: date.getTime(), utc: date.toUTCString() })
+  }
 })
 
 // listen for requests :)
