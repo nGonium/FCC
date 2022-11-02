@@ -6,8 +6,8 @@ const schema = new Schema({
     required: true,
   },
   date: {
-    type: String,
-    default: new Date().toDateString(),
+    type: Date,
+    default: new Date(),
   },
   duration: {
     type: Number,
@@ -19,11 +19,19 @@ const schema = new Schema({
   },
 })
 
-// schema.set('toJSON', {
-//   transform: (orig, ret) => {
-//     delete ret.__v
-//   }
-// })
+schema.set('toJSON', {
+  transform: (orig, ret) => {
+    ret.date = orig.date.toDateString()
+    delete ret.__v
+  }
+})
+
+schema.set('toObject', {
+  transform: (orig, ret) => {
+    ret.date = orig.date.toDateString()
+    delete ret.__v
+  }
+})
 
 const Exercise = model('Exercise', schema)
 

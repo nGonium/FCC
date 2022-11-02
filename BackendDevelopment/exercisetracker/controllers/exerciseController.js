@@ -12,7 +12,7 @@ router.post('/:id/exercises', async (req, res, next) => {
         duration: parseInt(req.body.duration),
         username: user.username,
         // TODO this simply returns Invalid Date, not proper validation
-        date: req.body.date ? new Date(req.body.date).toDateString() : undefined,
+        date: req.body.date ? new Date(req.body.date) : undefined,
       })
       exercise.save()
         .then(exercise => {
