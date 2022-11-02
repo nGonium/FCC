@@ -7,11 +7,11 @@ const userSchema = new Schema({
   }
 })
 
-userSchema.set('toJSON', {
-  transform: (orig, ret) => {
-    delete ret.__v
-  }
-})
+// userSchema.set('toJSON', {
+//   transform: (orig, ret) => {
+//     delete ret.__v
+//   }
+// })
 
 const User = model('User', userSchema)
 

@@ -5,25 +5,25 @@ const schema = new Schema({
     type: String,
     required: true,
   },
-  description: {
+  date: {
     type: String,
-    required: true,
+    default: new Date().toDateString(),
   },
   duration: {
     type: Number,
     required: true,
   },
-  date: {
+  description: {
     type: String,
-    default: new Date().toDateString(),
+    required: true,
   },
 })
 
-schema.set('toJSON', {
-  transform: (orig, ret) => {
-    delete ret.__v
-  }
-})
+// schema.set('toJSON', {
+//   transform: (orig, ret) => {
+//     delete ret.__v
+//   }
+// })
 
 const Exercise = model('Exercise', schema)
 

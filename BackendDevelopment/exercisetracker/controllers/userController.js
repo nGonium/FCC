@@ -1,26 +1,17 @@
 const router = require('express').Router()
 const User = require('../models/userModel')
 
-router.post('/', async (req, res) => {
+router.post('/', (req, res, next) => {
   const createdUser = new User(req.body)
-  createdUser.save((err, result) => {
-    if (err) {
-      console.error(err)
-      res.status(500).end()
-    }
-    res.json(result)
-  })
+  createdUser.save()
+    .then(result => res.json(result))
+    .catch(err => next(err))
 })
 
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
   User.find({})
-    .exec((err, result) => {
-      if (err) {
-        console.error(err)
-        res.status(500).end()
-      }
-      res.json(result)
-    })
+    .then(result => res.json(result))
+    .catch(err => next(err))
 })
 
 module.exports = router
