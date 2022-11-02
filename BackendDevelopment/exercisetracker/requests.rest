@@ -1,0 +1,24 @@
+# Testing Person 636248af3b7225503db213b4
+# Get users
+GET http://localhost:3000/api/users/
+
+### Get logs
+GET http://localhost:3000/api/users/636248af3b7225503db213b4/logs
+
+### Optional queries
+GET http://localhost:3000/api/users/636248af3b7225503db213b4/logs?from=1989-01-01&limit=20
+
+### Create exercise without date
+POST http://localhost:3000/api/users/636248af3b7225503db213b4/exercises
+Content-Type: application/x-www-form-urlencoded
+
+description=This uses default time
+&duration=20
+
+### Create exercise (all fields)
+POST http://localhost:3000/api/users/636248af3b7225503db213b4/exercises
+Content-Type: application/x-www-form-urlencoded
+
+description=This uses 1990-01-01
+&duration=20
+&date=1990-01-01
