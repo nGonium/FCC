@@ -1,4 +1,5 @@
 import { useState } from "react"
+import QuoteBlock from "./QuoteBlock"
 
 const quoteList = [
   {
@@ -105,27 +106,28 @@ const quoteList = [
 
 export default function QuoteMachine() {
   const [quoteIndex, setQuoteIndex] = useState(0)
+  const quote = quoteList[quoteIndex]
+  const randomiseQuote = () => setQuoteIndex(Math.floor(Math.random() * quoteList.length))
+
   return (
     <div id="quote-box" className="container" style={{maxWidth: "600px"}}>
       <div className="card p-5">
-        <blockquote className="blockquote">
-          <p id="text" className="text-center text-primary" style={{fontSize: "200%"}}>
-            <i class="fa-solid fa-quote-left"></i> {quoteList[quoteIndex].text}
-          </p>
-          <footer id="author" className="blockquote-footer text-end">{quoteList[quoteIndex].author || "Unknown"}</footer>
-        </blockquote>
-        
-
+        <QuoteBlock quote={quote} />
         <div className="d-flex justify-content-between" >
           <div className="d-flex gap-1">
-            <button className="btn btn-primary">
-                <a href={`https://www.twitter.com/intent/tweet?text=${quoteList[quoteIndex].text} - ${quoteList[quoteIndex].author}`} id="tweet-quote"><i className="fa-brands fa-twitter" style={{color:"white"}}></i></a>
+            <button className="btn btn-primary mr-2">
+                <a href={`https://www.twitter.com/intent/tweet?text=${quote.text} - ${quote.author}`} id="tweet-quote"><i className="fa-brands fa-twitter" style={{color:"white"}}></i></a>
             </button>
             <button className="btn btn-primary disabled">
                 <a href="https://www.twitter.com/intent/tweet" id="tweet-quote"><i className="fa-brands fa-tumblr" style={{color:"white"}}></i></a>
             </button>
           </div>
-          <button id="new-quote" className="btn btn-outline-primary" onClick={() => setQuoteIndex(Math.floor(Math.random() * quoteList.length))}>New Quote</button>
+          <button 
+            id="new-quote" 
+            className="btn btn-outline-primary" 
+            onClick={randomiseQuote}>
+            New Quote
+          </button>
         </div>
       </div>      
     </div>
