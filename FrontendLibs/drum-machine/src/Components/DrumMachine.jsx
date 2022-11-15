@@ -46,8 +46,13 @@ const DrumMachine = () => {
   const audioRefs = useRef({})
 
   const playAudio = (key, filename) => {
-    audioRefs[key].play()
-    setCurrentPlaying(filename.replace('-', ' '))
+    const audio = audioRefs[key]
+    if (audio.paused) {
+      audioRefs[key].play()
+      setCurrentPlaying(filename.replaceAll('-n-', ' \'n ').replaceAll('-', ' '))  
+    } else {
+      audio.currentTime = 0
+    }
   }
 
   useEffect(() => {
@@ -55,6 +60,8 @@ const DrumMachine = () => {
       const keydown = drumpads.find(({key}) => key === e.key.toUpperCase())
       if (keydown) {
         playAudio(keydown.key, keydown.file)
+      } else {
+        setCurrentPlaying(`No audio for "${e.key}"`)
       }
     }
 
@@ -63,13 +70,13 @@ const DrumMachine = () => {
   }, [])
   
   return (
-    <div id="drum-machine" className="container">
+    <div id="drum-machine" className="container p-2 my-4 bg-dark rounded d-flex flex-column gap-1" style={{maxWidth: "400px"}}>
         <div 
           id="display" 
           className="form-control">
           {currentPlaying}
         </div>
-        <div className="d-grid m-auto gap-1" style={{gridTemplateColumns: "1fr 1fr 1fr", maxWidth: "400px"}}>
+        <div className="d-grid w-100 gap-1" style={{gridTemplateColumns: "1fr 1fr 1fr"}}>
         {drumpads.map( ({ file, key }) => (
         <div
           id={`drumpad-${file}`}
