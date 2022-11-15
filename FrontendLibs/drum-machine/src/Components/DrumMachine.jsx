@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useEffect } from "react"
 import { useRef } from "react"
+import DrumPad from "./DrumPad"
 
 const drumpads = [
   {
@@ -46,9 +47,9 @@ const DrumMachine = () => {
   const audioRefs = useRef({})
 
   const playAudio = (key, filename) => {
-    const audio = audioRefs[key]
+    const audio = audioRefs.current[key]
     if (audio.paused) {
-      audioRefs[key].play()
+      audio.play()
       setCurrentPlaying(filename.replaceAll('-n-', ' \'n ').replaceAll('-', ' '))  
     } else {
       audio.currentTime = 0
@@ -70,28 +71,20 @@ const DrumMachine = () => {
   }, [])
   
   return (
-    <div id="drum-machine" className="container p-2 my-4 bg-dark rounded d-flex flex-column gap-1" style={{maxWidth: "400px"}}>
-        <div 
+    <div id="drum-machine" className="container p-3 my-4 bg-dark rounded" style={{maxWidth: "400px"}}>
+        <p 
           id="display" 
-          className="form-control">
-          {currentPlaying}
-        </div>
-        <div className="d-grid w-100 gap-1" style={{gridTemplateColumns: "1fr 1fr 1fr"}}>
+          className="form-control form-control-lg">{currentPlaying}</p>
+        <div className="d-grid gap-2" style={{gridTemplateColumns: "1fr 1fr 1fr"}}>
         {drumpads.map( ({ file, key }) => (
-        <div
-          id={`drumpad-${file}`}
-          onClick={() => playAudio(key, file)}
-          className="drum-pad btn btn-primary">
-          <audio 
-            ref={(el) => audioRefs[key] = el}
-            id={key}
-            className="clip" 
-            type="audio/mpeg"
-            src={`/audio/${file}.mp3`}></audio>
-            {key}
-        </div>
-      ) )}
-    </div>
+          <DrumPad 
+            file={file}
+            key={key}
+            kbd={key}
+            refs={audioRefs}
+            clickHandler={() => playAudio(key, file)} />
+        ) )}
+      </div>
     </div>
   )
 }
